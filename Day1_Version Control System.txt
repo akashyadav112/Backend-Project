@@ -1,3 +1,18 @@
+Basic Concept of git 
+    Git has 4 phases
+	|-> working set : where we are working, and new and modifed files are present
+	|-> stagging area : filering zone, tells which are commited and which are new(not commited)
+	|-> local git repo : commited files are present 
+	|-> remote git repo : remote present repo
+
+	** moving file from working  set  to staging area : git add . or git add "file_name" 
+	** moving file from staging area to local git repo: git commit -m "commit_comment"
+	** before moving file from local git repo to remote git repo, we need to map remote repo into local repo so that we can add our changes from local to remote 
+	   so for doing that add remote repo with some name(like origin here) 'git remote add origin https://github.com/akashyadav112/Learning-Development.git'
+	** moving file from local repo to remote reppo : git push origin main (where origin is name of local repo mapped to remote repo url & main is branch)
+
+	
+---------------------------------------------------------------------------------------------------------------------------------
 Git Setup --
 	|-> download : https://git-scm.com/download/win -> standalone -> 64bit
 	|-> install git on system by clicking next 
@@ -6,25 +21,71 @@ Git Setup --
 	|-> To Config the gitub here, do write this commands : 
 		$ git config --global user.email "akashyadav1121998@gmail.com"
 		$ git config --global user.name "akashyadav112"
-
-There are 2 things--- 
-   1) first thing,, create a repo out of a folder from your system
-	|-> go to the folder where u want to commit the files
-	|-> right click -> git bash
 	
-	|-> Some commands to push file to github 
-		Initialize a Local Git Repository(when existing repositiory not there ): git init 
-		Add Your Files: git add . (this command will add files in current directory but if you want to add only specific files then you can replace . with "file name")
-	Commit Your Changes: git commit -m "commit message"
-	Add the Remote Repository: git remote add origin https://github.com/akashyadav112/Backend-Project.git(i.e repo name at last)
-	Push Your Changes to master branch: git push -u origin main
+	|-> if doing first time then, auth will happen
+---------------------------------------------------------------------------------------------------------------------------------
+There are 3 things--- 
+   1) create a new repository on the command line
+	echo "# Learning-Development" >> README.md
+	git init
+	git add README.md
+	git commit -m "first commit"
+	git branch -M main 
+	git remote add origin https://github.com/akashyadav112/Learning-Development.git
+	git push -u origin main
 
-   2) second thing, pushing your files in existing repo 
-	|-> clone that repo : git clone <repository-url>
-	|-> Add and Commit Changes : git add .
-	|-> commit : git commit -m "Your commit message here"
-	|-> push your changes : git push origin master
+** 'git remote add origin https://github.com/akashyadav112/Learning-Development.git' , is used to add a remote repository to your local Git repository. so that you can work and commit changes back to that remote repo, and origin is the name you give to that remote repo while working locally, so if you are working on more than one repo locally and given both of them as name, origin then you will not be able to push.. 
 
-*** always in b/w every step you can check git status it will tell you file is untracked, commited etc..
+     |-> ** 'git remote -v' : this will list all remote repo present in your local along with name(like origin) and urls..
+     |-> To remove the existing "origin" remote, you can use: 'git remote remove origin' and do 'git remote add origin <new-repository-url>' on repo you want to work 
 
+*** always in b/w every step you can check "git status" it will tell you file is untracked, commited etc..
+*** you can check history by "git log"
+
+
+---------------------------------------------------------------------------------------------------------------------------------
+
+   2) push an existing repository from the command line
+	git remote add origin https://github.com/akashyadav112/Learning-Development.git  ( to bring remote repo to local git repo so that we can work on it)
+	git branch -M main
+	git push -u origin main
+---------------------------------------------------------------------------------------------------------------------------------
+
+   3) clone existing repository do some changes and again commit it. 
+	git clone <repository-url>
+	git add .
+	git commit -m "Your commit message here"
+	git push origin master
+
+When you clone a repository using git clone <repository-url>, Git automatically sets up a remote called "origin" that points to the repository you've cloned from. So, after cloning a repository, you generally do not need to manually add a remote with the "origin" name.
+
+Here's what happens when you clone a repository:
+
+Git creates a new directory in your local file system with the name of the repository.
+Git initializes a new Git repository in that directory.
+Git fetches all the files and history from the remote repository specified in <repository-url>.
+Git sets up a remote called "origin" by default, pointing to the repository you've cloned from.
+Therefore, after cloning, you can immediately start working with the repository and push changes to the remote repository using the "origin" remote without needing to add it manually.
+
+----------------------------------------------------------Braching--------------------------------------------------------------------	
+	|-> when we do braching, then we create replica's of the branch we are copying from ( so e.g currenty i am working in dev brach and i created one brach fp then 		fp will be replica of dev)
+	|-> go to file folder where we want to create new brach , 'git branch newDev'
+	|-> now do checkout so you can move to new branch, 'git branch newDev'
+
+	|-> now need to merge newDev to dev
+		|-> checkout the branch in which u want to merge the code : 'git checkout dev'
+		|-> now merge the branch you want to merge with dev : 'git merge newDev'
+		|-> if any issues then resolve them
+		|-> commit it : 'git commit'
+		|-> push the changes remotely if needed : git push origin dev
+		|-> no further use of branch then delete it : 'git branch -d newDev'
+
+		** now you want to take new changes into your local from remote (of dev)
+		|-> git pull origin dev (only used to take latest changes)
+		** git  pull cannot be used for the very first time, so you need clone at first when you are setting up the branch
+
+	Q) should you directly merge the code in main branch ?? No, you should raise a pull request first
+	Q) should you directly work in main branch ? No, you should work in different branch and then merge in main branch
+
+	
 	
