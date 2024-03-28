@@ -7,6 +7,8 @@ Git Setup --
 		$ git config --global user.email "akashyadav1121998@gmail.com"
 		$ git config --global user.name "akashyadav112"
 
+There are 2 things--- 
+   1) first thing,, create a repo out of a folder from your system
 	|-> go to the folder where u want to commit the files
 	|-> right click -> git bash
 	
@@ -16,4 +18,13 @@ Git Setup --
 	Commit Your Changes: git commit -m "commit message"
 	Add the Remote Repository: git remote add origin https://github.com/akashyadav112/Backend-Project.git(i.e repo name at last)
 	Push Your Changes to master branch: git push -u origin main
+
+   2) second thing, pushing your files in existing repo 
+	|-> clone that repo : git clone <repository-url>
+	|-> Add and Commit Changes : git add .
+	|-> commit : git commit -m "Your commit message here"
+	|-> push your changes : git push origin master
+
+*** always in b/w every step you can check git status it will tell you file is untracked, commited etc..
+
 	
