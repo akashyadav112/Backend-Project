@@ -1,0 +1,19 @@
+Git Setup --
+	|-> download : https://git-scm.com/download/win -> standalone -> 64bit
+	|-> install git on system by clicking next 
+	|-> check version whether it is installed or not : git --version
+	
+	|-> To Config the gitub here, do write this commands : 
+		$ git config --global user.email "akashyadav1121998@gmail.com"
+		$ git config --global user.name "akashyadav112"
+
+	|-> go to the folder where u want to commit the files
+	|-> right click -> git bash
+	
+	|-> Some commands to push file to github 
+		Initialize a Local Git Repository(when existing repositiory not there ): git init 
+		Add Your Files: git add . (this command will add files in current directory but if you want to add only specific files then you can replace . with "file name")
+	Commit Your Changes: git commit -m "commit message"
+	Add the Remote Repository: git remote add origin https://github.com/akashyadav112/Backend-Project.git(i.e repo name at last)
+	Push Your Changes to master branch: git push -u origin main
+	
