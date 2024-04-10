@@ -1,0 +1,72 @@
+IOC : ioc is a concept which says DI(dependency injection) will be done by spring fwk instead of developer.
+DI(Dependency injection) : 
+
+e.g 
+
+public class MainCtrl {
+
+	MainService mainService;
+	MainCtrl(){
+	   this.mainService = new MainService(new Person(new Pet()));
+	}
+
+}
+
+public class MainService {
+
+	Person person;
+	MainService(Person p){
+	   this.person = p;
+	}
+
+}
+
+public class Person {
+
+	Pet p;
+	Person(Pet p){
+	  this.p = p;
+	}
+
+}
+
+in above code, object dependency are there, moment code grows, its difficult to manage object dependencies and inject them manually, so to avoid that we spring fwk came up with autowiring.
+
+IOC Container : Responsible for managing life cycle of bean
+Bean : object required to run the application is bean(POJO)
+
+Bean life cycle :
+ 1) Instantiation : oject creation
+ 2) populate the properties, by injecting objects 
+	|-> constructor injection
+	|-> setter injection
+	|-> field/attribute injection
+ 3) set bean names
+ 4) uses Beanfactory to map, bean names & objects
+ 5) pre-initailization -> initailization -> post-initailization
+	
+	pre-initailization : injecting the objects in required attribute, (all dependend beans are present in heap)
+	initailization : making/getting the read to use object
+	post-initailization : things which will work after object integration i.e PostConstruct or run method in commandlinerunner
+		
+		e.g 
+		public class splitApplication implements CommandLineRunner {
+			
+			@Autowired
+  			InitService initService;
+     
+        		public static void main(String[] args){
+				springApplication.run(SplitApplication.class,args);
+			}
+
+			public void run(){
+				initService.savetoDb(); // this is saving the data to db (harcoded data to db)
+				sysout("Data saved to Db after starting of application & before hitting any api");
+			}
+
+		}
+		
+		** now when application starts, bean initializes  and once it is done, post main method run() method will run and data will be saved to db after bean 		intialization and program start but before any api is hit.
+
+  6) Bean is ready
+  7) Bean destruction
