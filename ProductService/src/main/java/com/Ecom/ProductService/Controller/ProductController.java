@@ -3,6 +3,7 @@ package com.Ecom.ProductService.Controller;
 import com.Ecom.ProductService.Dtos.ProductRequestDTO;
 import com.Ecom.ProductService.Dtos.ProductResponseDTO;
 import com.Ecom.ProductService.Dtos.ProductResponseListDTO;
+import com.Ecom.ProductService.Exceptions.ProductNotFoundException;
 import com.Ecom.ProductService.Service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -29,9 +30,13 @@ public class ProductController {
         ProductResponseListDTO productResponse = productService.getAllProducts();
         return ResponseEntity.ok(productResponse);
     }
-
+/*
+    when I am simply throwing error ProductNotFoundException, its needs to handled as
+     I am throwing on controller layer so it will directly throw exception in console but in client it will not show in desired way
+     so to handle that we will do global exceptional handling of ProductNotFoundException
+*/
     @GetMapping("v1/products/{id}")
-    public ResponseEntity<ProductResponseDTO> getProductById(@PathVariable String id){
+    public ResponseEntity<ProductResponseDTO> getProductById(@PathVariable String id) throws ProductNotFoundException {
         ProductResponseDTO productResponse = productService.getProductById(id);
             return ResponseEntity.ok(productResponse);
     }

@@ -1,7 +1,9 @@
 package com.Ecom.ProductService.Exceptions;
 
+import com.Ecom.ProductService.Dtos.ErrorResponseDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.ErrorResponse;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
@@ -13,9 +15,11 @@ public class GlobalExceptionHandler {
      * @param  e
      * @return error
      */
-    @ExceptionHandler(value = NullPointerException.class)
-    public ResponseEntity<String> handleNullPointer(Exception e){
-        String exceptionResponse = "error : something went wrong" + "errorCd:"+ HttpStatus.INTERNAL_SERVER_ERROR;
-        return ResponseEntity.ok(exceptionResponse);
+    @ExceptionHandler(value = ProductNotFoundException.class)
+    public ResponseEntity<ErrorResponseDTO> handleNullPointer(Exception e){
+        ErrorResponseDTO errorResponseDTO = new ErrorResponseDTO();
+        errorResponseDTO.setErrorMsg(e.getMessage());
+        errorResponseDTO.setErrorCd("404");
+        return new ResponseEntity<>(errorResponseDTO,HttpStatus.NOT_FOUND);
     }
 }

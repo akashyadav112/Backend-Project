@@ -1,0 +1,12 @@
+Adaptor design pattern : used when calling a 3rd party
+  whenever we are calling a 3rd party api, it is not a good practice to call it in service layer, as it is possible that the third party deatials like (payload or api enpoint might change) so better to keep it away from business logic so that we do not have to do any changes in business logic 
+
+ we create a client class for that 3rd party call & it act as your adapter .
+
+** after this flow will look like this Controller->service-> FakeStoreApiClient 
+    now the dto we are getting for contoller and response might be different from request & response dto of used to call fakeStoreApiClient so it is a better practice to create different dto ..
+
+** when I am simply throwing error ProductNotFoundException, its needs to handled as I am throwing on controller layer so
+   it will directly throw exception in console but in client it will not show in desired way so to handle that we will do       global exceptional handling of ProductNotFoundException
+
+** @Value("{}") : is used to read data from application.properties 
