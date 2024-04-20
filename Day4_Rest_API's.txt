@@ -1,0 +1,39 @@
+API - Application programming interface
+set of methods/endpoints/functionality that are provided by system to be used by us
+
+Prouduct Manager - Defines what is required to be build.
+Best practices for API Design : https://learn.microsoft.com/en-us/azure/architecture/best-practices/api-design
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+REST - Representational state transfer 
+Rest is stateLess i.e it does not remember anything from previous call. authentication & authorization will happen evertime, everytime it feels like a new call, for every call we need to send complete details.
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------
+DBAAS : DataBase as service 
+Some comanies make DB operations one service and make it accessible for other ms, so all db operation can be one place and can be easily accessed by other ms easily 
+so while learing we will be using one of our DBAAS service FakeStore : https://fakestoreapi.com/docs (for learning 3rd party calling)
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Lets understand the 
+	1) flow from client to machine(spring boot/tomcat server) 
+	   whenever we hit an application i.e www.example.com/products -> 
+	   with the helps of DNS we are able to get ip + port -> 
+	   ip tells which machine(as diferent for different machine) and port tells on which port the tomcat server is runing -> 
+	   and the endpoint(/products) with dispatchservlet tells which controller.(see the second flow)
+
+	2) flow from application to response 
+	   request recieve to dispatch servlet 
+	   request recieved -> 
+	   filters (for authentications) ->  
+	   goes to dispatch servlet ( it has 2 components handlerMapping and handlerAdapter) -> 
+	   handlerMapping figures out whiich method, which class ( annotation like getMapping are being utilised here, basically it takes type of http method from 			url) -> 	
+	   handlerAdapter uses that classes to call method & process furter happens ->
+	   processing (controller,service,repo,db) happens ->
+           GlobalHandler ( handling of response from controller and formating in beautiful way i.e use of controlleradvice etc comes here) ->
+	   response to user
+
+           
+** intercepters : before request reaches to the controller, we can intercept & act on it.(means before hitting controller if we need some sort of processing then intercept can help us out)
+
+** while calling some 3rd party or sending response the DTO which we are using must have getter or setters otherwise the serialisation/desearlisation will not be possible and hence it will throw 406 not acceptable error.
+	 
