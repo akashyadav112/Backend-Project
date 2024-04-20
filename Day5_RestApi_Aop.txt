@@ -1,0 +1,86 @@
+Rest Template : with rest template we can call 3rd party api's
+
+Dependency injections : 
+  1) Setter injection : 
+	public class ProductCtrl {
+		private productService p;
+
+		@Autowired
+		public setProductService(ProductService p){
+			this.p  = p;
+		}
+	}
+	
+	** benifits of setter injection is that is flexible i.e until and unless i do not call setter injection, dependency won't be injected. i.e allows for optional depenedency as you do not have to set all properties.
+	** disadvantanges : 
+		mutability : one bean initalised due to @service now at setter method i can pass a different implementation of prodoctService i/e ProductService : 1) fakeStoreProductService 2) normalStoreProductService , now if i pass fakeStore & normalStore was intialise then we will have problem.
+
+		Not fail fast : anything which has a potential issue should not fail at runtime but at compile time
+		 if we are not calling setter methods, then setter injection will not give us any issues but later when at run time if we call it, issues will come , so here it instead of failing this type of error at compile time(fail fast) it is failing at run time.
+
+	** it is not recomended as deveopler needs to write some code, and above 2 disadvantages.
+
+  2) Field injection : 
+	public class ProductCtrl {
+		@Autowired
+		private productService p;
+	}
+
+	advantages : easy code
+	disadvantages : no optional dependeny, not easy to test(like in constructor injection we can easily print logs and test it)
+
+	** it is also not recomended to use
+
+  3) Constructor injection : 
+	public class ProductCtrl {
+		private final productService p;
+
+		public ProductCtrl(@Qualifier("fakeStoreService") ProductService p){
+			this.p  = p;
+		}
+	}
+
+	** since constructor is being called at time of object creation itself(productCtrl) so what ever dependency (fakeStore or NormalStore) we will pass will be injected & it will be immutatable as we cannot call contructor of productCtrl again and again so values will not change unlike setter injection
+
+	** fail fast : suppose we have put @Service on fakeStore and we are passing normalStore then it will throw excepion at compile time only.
+
+	** testing is very easy
+	** since it is immutable so we use final keyword  
+	** it is not singleton class(productCtrl ) as one object creating here one object we can create in test classes.
+
+=== Depricated ===
+functionality is available and is working but developer/community will not provide any support if any bug/issue came/
+
+---Type Erasing ---
+Any (generic) internal type will be erased at runtime .
+eg. 
+Class Main {
+	public static void main(String[] args){
+		List<Integer> n = new ArrayList<>();
+		n.add(1);
+		n.add(2);
+		Sysout(n.getClass().getName());
+	}
+}
+
+o/p -> list 
+but we thought it should be list of integers, this is type erasing means erasing the type, either list of integers or generic list, type will not matter a type will be erased to make it backword compatible..
+
+	Q) if type does not matter, then what will be o/p of below code 
+	
+Class Main {
+	public static void main(String[] args){
+		List<Integer> n = new ArrayList<>();
+		n.add(1);
+		n.add("abc");
+		Sysout(n.getClass().getName());
+	}
+}
+
+o/p -> compile time error as type erasing happens at run time, but at compile time it checks the type so it will throw error at n.addd("abc") line
+
+======Cross cutting concerns =====
+valid accross all events & are invoke only when a certain things happens e.g error loggging, execptional handling, security, performance monitorings
+
+AOP : Aspect oriented programming is programming paradigm thats focuses on the seperation on the seperation of cross cutting concern in s/w application. cross cutting concerns are aspects of a program that affect multiple modules & are often difficult to modularize using trandional object (oop) techinque.
+
