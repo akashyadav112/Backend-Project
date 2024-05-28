@@ -1,10 +1,13 @@
 package com.Ecom.ProductService.Models;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.List;
 
 @Getter
 @Setter
@@ -18,7 +21,6 @@ public class Product extends BaseModel {
 
     @ManyToOne
     private Category category;
-
 }
 /*
  * Product : Price

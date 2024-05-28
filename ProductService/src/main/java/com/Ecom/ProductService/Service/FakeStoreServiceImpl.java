@@ -58,4 +58,9 @@ public class FakeStoreServiceImpl implements ProductService{
     public boolean deleteProductById(String id) {
         return fakeStoreApiClient.deleteProductById(id);
     }
+
+    @Override
+    public ProductResponseDTO findProductByTitle(String title) throws ProductNotFoundException {
+        return null;
+    }
 }

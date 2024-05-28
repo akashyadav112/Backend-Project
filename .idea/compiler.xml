@@ -7,13 +7,17 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="MappedSuperClass" />
         <module name="ProductService" />
+        <module name="AuthService" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="MappedSuperClass" target="21" />
+    </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="AuthService" options="-parameters" />
       <module name="MappedSuperClass" options="-parameters" />
       <module name="ProductService" options="-parameters" />
     </option>

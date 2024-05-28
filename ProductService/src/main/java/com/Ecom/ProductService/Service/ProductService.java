@@ -10,4 +10,5 @@ public interface ProductService {
     ProductResponseListDTO getAllProducts();
     ProductResponseDTO createProduct(ProductRequestDTO productRequestDTO);
     boolean deleteProductById(String id);
-}
+    public ProductResponseDTO findProductByTitle(String title) throws ProductNotFoundException;
+    }

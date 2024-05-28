@@ -20,14 +20,15 @@ public class ProductController {
      */
     private final ProductService productService;// since constructor injection is imutable so its good practice to make it final
 
-    // since there are two implementation of productService so we can choose which we want to inject with qualifier
-    public ProductController(@Qualifier("fakeStoreService") ProductService productService) {
+    // since there are two implementation of productService(productSevice & fakeStoreService --bean names of impl classes) so we can choose which we want to inject with qualifier
+    public ProductController(@Qualifier("productService") ProductService productService) {
         this.productService = productService;
     }
 
     @GetMapping("v1/products")
     public ResponseEntity<ProductResponseListDTO> getAllProducts(){
         ProductResponseListDTO productResponse = productService.getAllProducts();
+        System.out.println(productResponse);
         return ResponseEntity.ok(productResponse);
     }
 /*
