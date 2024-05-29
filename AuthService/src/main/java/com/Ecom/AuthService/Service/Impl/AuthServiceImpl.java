@@ -14,6 +14,7 @@ import com.Ecom.AuthService.Service.AuthService;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.util.MultiValueMapAdapter;
@@ -25,17 +26,19 @@ public class AuthServiceImpl implements AuthService {
 
     private final UserRepository userRepository;
     private final SessionRepository sessionRepository;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    public AuthServiceImpl(UserRepository userRepository, SessionRepository sessionRepository) {
+    public AuthServiceImpl(UserRepository userRepository, SessionRepository sessionRepository, BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.userRepository = userRepository;
         this.sessionRepository = sessionRepository;
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
     @Override
     public UserDTO signUp(SignUpRequestDTO signUp) {
         User user = new User();
         user.setEmailId(signUp.getEmail());
-        user.setPassword(signUp.getPassword());
+        user.setPassword(bCryptPasswordEncoder.encode(signUp.getPassword()));
         userRepository.save(user);
         return UserDTO.from(user);
     }
@@ -49,8 +52,8 @@ public class AuthServiceImpl implements AuthService {
         }
         User user = optionalUser.get();
         // 2.verify its password
-        if(!user.getPassword().equals(password)){
-            throw new InvalidCredentialsException("Password does not matched");
+        if (!bCryptPasswordEncoder.matches(password, user.getPassword())) {
+            throw new InvalidCredentialsException("Invalid Credentials");
         }
         // 3.generate one token
         String token = RandomStringUtils.randomAlphanumeric(30);
