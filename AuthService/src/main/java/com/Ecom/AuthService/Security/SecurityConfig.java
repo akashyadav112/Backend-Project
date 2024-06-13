@@ -16,7 +16,7 @@ public class SecurityConfig {
         http
                 .cors().disable()
                 .csrf().disable()
-                .authorizeHttpRequests(authorize->authorize.requestMatchers("/auth/*").permitAll())
+                .authorizeHttpRequests(authorize->authorize.requestMatchers("/auth/**").permitAll())
                 .authorizeHttpRequests(authorize->authorize.requestMatchers("/product").authenticated());
         return http.build();
     }

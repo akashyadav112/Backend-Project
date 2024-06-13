@@ -11,6 +11,9 @@ import com.Ecom.AuthService.Models.User;
 import com.Ecom.AuthService.Repository.SessionRepository;
 import com.Ecom.AuthService.Repository.UserRepository;
 import com.Ecom.AuthService.Service.AuthService;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.security.MacAlgorithm;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +22,8 @@ import org.springframework.stereotype.Service;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.util.MultiValueMapAdapter;
 
+import javax.crypto.SecretKey;
+import java.time.LocalDate;
 import java.util.*;
 
 @Service
@@ -56,7 +61,22 @@ public class AuthServiceImpl implements AuthService {
             throw new InvalidCredentialsException("Invalid Credentials");
         }
         // 3.generate one token
-        String token = RandomStringUtils.randomAlphanumeric(30);
+        //String token = RandomStringUtils.randomAlphanumeric(30);
+        MacAlgorithm alg = Jwts.SIG.HS256;
+        SecretKey key = alg.key().build();
+        Map<String, Object> jwtClaims = new HashMap<>();
+        jwtClaims.put("email",user.getEmailId());
+        jwtClaims.put("roles",user.getRoles());
+        jwtClaims.put("createdAt", new Date());
+        // adding expiry time of jwt token..
+        jwtClaims.put("expiryAt", new Date(LocalDate.now().plusDays(3).toEpochDay()));
+
+        String token = Jwts.builder()
+                .claims(jwtClaims) // added the claims
+                .signWith(key, alg) // added the algo and key
+                .compact(); //building the token
+
+
 
         // 4.check current whether user has any current active session.
         Optional<Session> optionalSession = sessionRepository.findUserLatestSession(user.getId());
@@ -77,7 +97,7 @@ public class AuthServiceImpl implements AuthService {
         UserDTO userDTO = UserDTO.from(user);
         MultiValueMapAdapter<String,String> headers = new MultiValueMapAdapter<>(new HashMap<>());
         // 6.set the token in the cookie headers
-        headers.set(HttpHeaders.SET_COOKIE,"auth-token:"+token);
+        headers.set(HttpHeaders.SET_COOKIE, token);
         return new ResponseEntity<>(userDTO, headers, HttpStatus.OK);
     }
 
@@ -96,7 +116,6 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public SessionStatus validate(String token, Long userId) {
         //TODO check expiry // Jwts Parser -> parse the encoded JWT token to read the claims
-
         //verifying from DB if session exists
         Optional<Session> sessionOptional = sessionRepository.findByTokenAndUser_Id(token, userId);
         if (sessionOptional.isEmpty() || sessionOptional.get().getSessionStatus().equals(SessionStatus.ENDED)) {
