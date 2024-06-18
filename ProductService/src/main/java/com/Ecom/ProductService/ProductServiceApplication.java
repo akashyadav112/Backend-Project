@@ -17,6 +17,6 @@ public class ProductServiceApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-		initService.initDB();
+		//initService.initDB();
 	}
 }

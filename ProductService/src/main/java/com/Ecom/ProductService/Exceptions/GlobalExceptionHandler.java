@@ -22,4 +22,11 @@ public class GlobalExceptionHandler {
         errorResponseDTO.setErrorCd("404");
         return new ResponseEntity<>(errorResponseDTO,HttpStatus.NOT_FOUND);
     }
+    @ExceptionHandler(value = InvalidTokenException.class)
+    public ResponseEntity<ErrorResponseDTO> handleTokenInvalidException(Exception e){
+        ErrorResponseDTO errorResponseDTO = new ErrorResponseDTO();
+        errorResponseDTO.setErrorMsg(e.getMessage());
+        errorResponseDTO.setErrorCd("403");
+        return new ResponseEntity<>(errorResponseDTO,HttpStatus.FORBIDDEN);
+    }
 }

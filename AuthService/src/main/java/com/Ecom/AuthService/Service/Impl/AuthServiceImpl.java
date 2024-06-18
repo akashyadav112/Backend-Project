@@ -65,7 +65,7 @@ public class AuthServiceImpl implements AuthService {
         MacAlgorithm alg = Jwts.SIG.HS256;
         SecretKey key = alg.key().build();
         Map<String, Object> jwtClaims = new HashMap<>();
-        jwtClaims.put("email",user.getEmailId());
+        jwtClaims.put("userId",user.getId());
         jwtClaims.put("roles",user.getRoles());
         jwtClaims.put("createdAt", new Date());
         // adding expiry time of jwt token..
